@@ -24,12 +24,13 @@ def read_phone_book(file_name):  # Чтение из файла телефонн
 
 def phone_book_file(func):  # Декоратор для автосохранения после изменения содержимого справочника
 
-    def wrapper(*arg, **kvarg):
-        # Reading phone book from a file
-        book = read_phone_book(BOOK_FILE_NAME)
-        arg = (book,) + arg
-        updated_book = func(*arg)
-        # Writing phone book to a file
+    def wrapper(*args, **kwargs):
+        if kwargs:
+            updated_book = func(*args, **kwargs)
+        else:
+            book = read_phone_book(BOOK_FILE_NAME)
+            arg = (book,) + args
+            updated_book = func(*arg)
         if updated_book:
             write_phone_book(BOOK_FILE_NAME, updated_book)
         return updated_book
@@ -40,7 +41,7 @@ def phone_book_file(func):  # Декоратор для автосохранен
 @phone_book_file
 def print_phone_book(phone_book):  # Вывод всех контактов на экран
     head = '\n' + '-' * 90 + '\n' + \
-           '№ (ID)'.ljust(10)+'Фамилия'.ljust(20)+'Имя'.ljust(20) +'Номер телефона'.ljust(24)+'Коментарий\n' + \
+           '№ (ID)'.ljust(10) + 'Фамилия'.ljust(20) + 'Имя'.ljust(20) + 'Номер телефона'.ljust(24) + 'Коментарий\n' + \
            '-' * 90
     print(head)
     for abonent_id, abonent_info in phone_book.items():
@@ -131,24 +132,17 @@ def del_abonent(phone_book):  # Удаление контакта из спра�
 @phone_book_file
 def find_abonent(phone_book, find_string):  # Поиск по всем полям справочника
     print(f"Поиск строки '{find_string}' в имеющихся полях телефонного справочника.")
-    head = '\n' + '-' * 90 + '\n' + \
-           '№ (ID)'.ljust(10) + 'Фамилия'.ljust(20) + 'Имя'.ljust(20) + 'Номер телефона'.ljust(24) + 'Коментарий\n' + \
-           '-' * 90
     find_string = find_string.lower()
-    res_string = ''
+    book_find = {}
     for abonent_id, abonent_info in phone_book.items():
-        if find_string in abonent_id.lower() or \
+        if find_string in abonent_id or \
                 find_string in abonent_info['surname'].lower() or \
                 find_string in abonent_info['name'].lower() or \
                 find_string in abonent_info['comment'].lower() or \
                 find_string in abonent_info['phone'].lower():
-            res_string += f"{abonent_id}".ljust(10)  + \
-                          f"{abonent_info['surname']}".ljust(20)  + \
-                          f"{abonent_info['name']}".ljust(20)  + \
-                          f"{abonent_info['phone']}".ljust(24)  + \
-                          f"{abonent_info['comment']}\n"
-    if res_string:
-        print(head, res_string, sep='\n')
+            book_find.update({abonent_id: abonent_info})
+    if book_find:
+        print_phone_book(phone_book=book_find)
     else:
         print('Ничего не найдено.')
 
@@ -179,20 +173,6 @@ while code_operation:
 Ваш выбор: ''')
     if operation.isdigit():
         code_operation = int(operation)
-        # if code_operation in menu_dict.keys():
-        #     if code_operation == 1:
-        #         print_phone_book()
-        #     elif code_operation == 2:
-        #         find_abonent(input('Введите шаблон для поиска: '))
-        #     elif code_operation == 3:
-        #         add_abonent()
-        #     elif code_operation == 4:
-        #         edit_abonent()
-        #     elif code_operation == 5:
-        #         del_abonent()
-        #     elif not code_operation:
-        #         break
-
         match code_operation:
             case 0:
                 break
