@@ -116,6 +116,7 @@ class View:
     @classmethod
     def del_abonent(cls) -> None:
         """Получает ID удаляемого контакта. Удаляет контакт."""
+
         if Controller.command('empty')[0]:
             print('Справочник пуст. Удалять нечего.')
         else:

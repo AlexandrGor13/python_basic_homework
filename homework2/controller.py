@@ -16,8 +16,10 @@ class Controller:
         result = (False, '')
         try:
             phone_book = PhoneBook()
+            flag_test = False
             if 'phone_book' in kwargs.keys():
                 phone_book = kwargs['phone_book']
+                flag_test = True
             else:
                 phone_book.read_phone_book()
             match name_command:
@@ -30,26 +32,48 @@ class Controller:
                 case 'add':
                     result = False, '\nКонтакт не был добавлен.'
                     phone_book = cls.add_abonent(phone_book, **kwargs)
-                    phone_book.write_phone_book()
+                    if not flag_test:
+                        phone_book.write_phone_book()
                     result = True, '\nНовый контакт добавлен.'
                 case 'update':
                     result = False, '\nКонтакт не был изменен.'
                     phone_book = cls.update_abonent(phone_book, **kwargs)
-                    phone_book.write_phone_book()
+                    if not flag_test:
+                        phone_book.write_phone_book()
                     result = True, '\nКонтакт изменен.'
                 case 'del':
                     result = False, '\nКонтакт не был удален.'
                     phone_book = cls.del_abonent(phone_book, **kwargs)
-                    phone_book.write_phone_book()
+                    if not flag_test:
+                        phone_book.write_phone_book()
                     result = True, '\nКонтакт удален.'
                 case 'empty':
-                    result = len(phone_book.get_id) == 0, ''
+                    result = cls.isempty_phonebook(phone_book), ''
                 case 'in':
-                    result = kwargs['abonent_id'] in phone_book.get_id, ''
+                    result = cls.id_in_phonebook(phone_book, **kwargs), ''
         except:
             raise
         finally:
             return result
+
+    @classmethod
+    def isempty_phonebook(cls, phone_book: PhoneBook) -> bool:
+        """Проверяет телефонный справочник. Пустой или нет
+
+        Ключевые аргументы:
+        phone_book -- аргумент типа PhoneBook, содержащий телефонный справочник
+        """
+        return len(phone_book.get_id) == 0
+
+    @classmethod
+    def id_in_phonebook(cls, phone_book: PhoneBook, **kwargs) -> bool:
+        """Проверяет наличие в телефонном справочнике указанного ID.
+
+        Ключевые аргументы:
+        phone_book -- аргумент типа PhoneBook, содержащий телефонный справочник
+        abonent_id -- ID пользователя
+        """
+        return kwargs['abonent_id'] in phone_book.get_id
 
     @classmethod
     def print_phonebook(cls, phone_book: PhoneBook) -> str:

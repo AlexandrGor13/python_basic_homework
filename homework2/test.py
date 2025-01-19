@@ -7,6 +7,7 @@ from model import PhoneBook, Abonent
 @pytest.fixture(params=[('Владимир', 'Сидоров', '89110363982', 'рабочий'),
                         ('Владимир', 'Петров', '89287364851', 'мобильный')])
 def add_phonebook(request):
+    """Фикстура для проверки метода Controller.add_abonent"""
     pb = PhoneBook()
     name, surname, phone, comment = 'Иван', 'Петров', '89042379836', 'рабочий'
     pb.add(Abonent(name, surname, phone, comment))
@@ -25,6 +26,7 @@ def test_add_abonent(add_phonebook):
 @pytest.fixture(params=[('Владимир', 'Сидоров', '89110363982', 'рабочий'),
                         ('Владимир', '', '', 'мобильный')])
 def update_phonebook(request):
+    """Фикстура для проверки метода Controller.update_phonebook"""
     pb = PhoneBook()
     name_old, surname_old, phone_old, comment_old = 'Иван', 'Петров', '89042379836', 'рабочий'
     pb.add(Abonent(name_old, surname_old, phone_old, comment_old))
@@ -44,6 +46,7 @@ def test_update_abonent(update_phonebook):
 
 @pytest.fixture(params=[('1',), ('2',)])
 def del_phonebook(request):
+    """Фикстура для проверки метода Controller.del_phonebook"""
     pb = PhoneBook()
     pb.add(Abonent('Иван', 'Петров', '89042379836', 'рабочий'))
     pb.add(Abonent('Владимир', 'Сидоров', '89110363982', 'рабочий'))
@@ -62,6 +65,7 @@ def test_del_abonent(del_phonebook):
 
 @pytest.fixture(params=[('Влади',), ('87',)])
 def find_phonebook(request):
+    """Фикстура для проверки метода Controller.find_phonebook"""
     pb = PhoneBook()
     pb.add(Abonent('Иван', 'Петров', '89042387836', 'рабочий'))
     pb.add(Abonent('Владимир', 'Сидоров', '87110363982', 'рабочий'))
@@ -75,43 +79,35 @@ def test_find_abonent(find_phonebook):
     assert Controller.find_abonent(pb, **param) == pb_new
 
 
-@pytest.fixture(params=[
-    # ('print', {}),
-    ('in', {'abonent_id': '3'}),
-    ('empty', {}),
-    # ('find', {'find_string': 'Влади'}),
-    # ('add', {'name': 'Сергей', 'surname': 'Петров', 'phone': '89287364851', 'comment': 'мобильный'}),
-    # ('update', {'abonent_id': '1', 'name': 'Сергей', 'surname': 'Петров', 'phone': '89287364851', 'comment': 'мобильный'}),
-    # ('del', {'abonent_id': '1'}),
-])
-def command_params(request):
+@pytest.fixture(params=[('True'), ('False',)])
+def isempty_phonebook(request):
+    """Фикстура для проверки метода Controller.isempty_phonebook"""
+    pb = PhoneBook()
+    flag = bool(request.param)
+    if flag:
+        pb.add(Abonent('Иван', 'Петров', '89042387836', 'рабочий'))
+        pb.add(Abonent('Владимир', 'Сидоров', '87110363982', 'рабочий'))
+
+    flag_new = len(pb.get_id) == 0
+    return pb, {}, flag_new
+
+
+def test_isempty_phonebook(isempty_phonebook):
+    pb, param, flag_new = isempty_phonebook
+    assert Controller.isempty_phonebook(pb) == flag_new
+
+
+@pytest.fixture(params=[('1',), ('3',)])
+def id_in_phonebook(request):
+    """Фикстура для проверки метода Controller.id_in_phonebook"""
     pb = PhoneBook()
     pb.add(Abonent('Иван', 'Петров', '89042387836', 'рабочий'))
     pb.add(Abonent('Владимир', 'Сидоров', '87110363982', 'рабочий'))
-    name_command, kwargs = request.param
-    match name_command:
-        case 'print':
-            return name_command, kwargs, (True, str(pb))
-        case 'find':
-            kwargs['phone_book'] = pb
-            return name_command, kwargs, (True, '')
-        case 'add':
-            kwargs['phone_book'] = pb
-            return name_command, kwargs, (True, '')
-        case 'update':
-            kwargs['phone_book'] = pb
-            return name_command, kwargs, (True, '')
-        case 'del':
-            kwargs['phone_book'] = pb
-            return name_command, kwargs, (True, '')
-        case 'empty':
-            kwargs['phone_book'] = pb
-            return name_command, kwargs, (len(pb.get_id) == 0, '')
-        case 'in':
-            kwargs['phone_book'] = pb
-            return name_command, kwargs, (kwargs['abonent_id'] in pb.get_id, '')
+    ab_id = request.param
+    flag = ab_id in pb.get_id
+    return pb, {'abonent_id': ab_id}, flag
 
 
-def test_command(command_params):
-    name_command, kwargs, result = command_params
-    assert Controller.command(name_command, **kwargs) == result
+def test_in_phonebook(id_in_phonebook):
+    pb, param, flag = id_in_phonebook
+    assert Controller.id_in_phonebook(pb, **param) == flag
