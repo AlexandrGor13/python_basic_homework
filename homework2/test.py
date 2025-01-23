@@ -111,3 +111,8 @@ def id_in_phonebook(request):
 def test_in_phonebook(id_in_phonebook):
     pb, param, flag = id_in_phonebook
     assert Controller.id_in_phonebook(pb, **param) == flag
+
+
+
+if __name__ == '__main__':
+    pytest.main(['-v'])
