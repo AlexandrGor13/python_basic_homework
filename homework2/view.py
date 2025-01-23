@@ -35,16 +35,34 @@ class View:
         return menu
 
     @classmethod
+    def input_operation_number(cls) -> int:
+        """Ввод номера операции с клавиатуры"""
+
+        str_operation = input()
+        if not str_operation.isdigit():
+            raise InputError('Неправильный ввод')
+        return int(str_operation)
+
+    @classmethod
+    def input_phone_number(cls) -> str:
+        """Ввод номера телефона с клавиатуры"""
+
+        str_phone = input('Телефон: ')
+        if not str_phone.isdigit():
+            raise InputError('Неправильный ввод')
+        return str_phone
+
+    @classmethod
     def start_menu(cls) -> None:
         """Запускает цикл выполнения программы."""
 
         operation = True
         while operation:
             os.system('cls' if os.name == 'nt' else 'clear')
-            str_operation = input(cls.get_menu())
+            print(cls.get_menu())
             try:
-                if str_operation.isdigit() and int(str_operation) in cls.menu_dict.keys():
-                    operation = int(str_operation)
+                operation = cls.input_operation_number()
+                if operation in cls.menu_dict.keys():
                     if operation:
                         cls.get_command(operation - 1)()
                     else:
@@ -52,6 +70,8 @@ class View:
                     input('\nДля продолжения нажмите Enter\n')
                 else:
                     print('Вы указали неправильную операцию. Попробуйте снова.')
+            except InputError as ex:
+                continue
             except (FileError, JSONError, Exception) as ex:
                 print('\nПроизошла непредвиденная ошибка. ' + \
                       f'{ex.message if type(ex) == type(FileError) or type(ex) == type(JSONError) else ex}\n' + \
@@ -84,10 +104,13 @@ class View:
         print('Введите нужное значение и нажмите Enter.')
         name = input('Имя: ')
         surname = input('Фамилия: ')
-        phone = input('Телефон: ')
+        phone = '_'
         while not phone.isdigit():
-            print('Номер телефона должен состоять из цифр!')
-            phone = input('Телефон: ')
+            try:
+                phone = cls.input_phone_number()
+            except InputError as ex:
+                print('Номер телефона должен состоять из цифр!')
+                continue
         comment = input('Комментарий: ')
         print(Controller.command('add', name=name, surname=surname, phone=phone, comment=comment)[1])
 
@@ -103,13 +126,16 @@ class View:
                 abonent_id = input(
                     'Такого ID в справочнике нет. Укажите существующий ID контакта, который требуется изменить:')
             print('Если требуется изменить поле, введите нужное значение, иначе нажмите Enter.')
-            name = input(f'Name: ')
-            surname = input(f'Surname: ')
-            phone = input(f'Phone: ')
+            name = input(f'Имя: ')
+            surname = input(f'Фамилия: ')
+            phone = '_'
             while not phone.isdigit() and phone:
-                print('Номер телефона должен состоять из цифр!')
-                phone = input(f'Phone: ')
-            comment = input(f'Comment: ')
+                try:
+                    phone = cls.input_phone_number()
+                except InputError as ex:
+                    print('Номер телефона должен состоять из цифр!')
+                    continue
+            comment = input(f'Комментарий: ')
             print(Controller.command('update', abonent_id=abonent_id, name=name, surname=surname, phone=phone,
                                      comment=comment)[1])
 
