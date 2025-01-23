@@ -3,12 +3,14 @@
 import json
 import os
 
+
 class InputError(Exception):
     """Класс исключения для обработки ошибок связанных с неправильным вводом данных"""
 
     def __init__(self, message: str):
         super().__init__()
         self.message = message
+
 
 class JSONError(Exception):
     """Класс исключения для обработки ошибок связанных с JSON-форматированием и чтением содержимого JSON-файла"""
@@ -125,7 +127,11 @@ class PhoneBook:
 
     def __str__(self):
         res_str = '\n' + '-' * 85 + '\n' + \
-                  'Номер (ID)\tФамилия\t\tИмя\t\tНомер телефона\t\tКоментарий' + \
+                  'Номер (ID)'.ljust(16) + \
+                  'Фамилия'.ljust(16) + \
+                  'Имя'.ljust(16) + \
+                  'Номер телефона'.ljust(24) + \
+                  'Коментарий' + \
                   '\n' + '-' * 85 + '\n'
         for ab_id, ab in self._abonents.items():
             res_str += (str(ab_id)).ljust(16) + \
