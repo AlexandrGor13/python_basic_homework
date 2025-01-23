@@ -230,7 +230,7 @@ class PhoneBook:
         return find_book
 
     def write_phone_book(self) -> None:
-        """Запись в файл телефонного мправочника"""
+        """Запись в файл телефонного справочника"""
         try:
             writer = FileWriter(self.file_name)
             writer.write(self._abonents)
