@@ -22,6 +22,7 @@ def fail_fixture_get_data(request):
 
 
 def test_get_data(fixture_get_data):
+    """Функция тестирования для view.get_data()"""
     name, surname, phone, comment = fixture_get_data
     input_data = '\n'.join([name, surname, phone, comment])
     sys.stdin = StringIO(input_data)
@@ -32,6 +33,7 @@ def test_get_data(fixture_get_data):
 
 @pytest.mark.xfail()
 def test_fail_get_data(fail_fixture_get_data):
+    """Функция тестирования для view.get_data() с неправильными данными"""
     name, surname, phone, comment = fail_fixture_get_data
     input_data = '\n'.join([name, surname, phone, comment])
     sys.stdin = StringIO(input_data)
@@ -41,6 +43,7 @@ def test_fail_get_data(fail_fixture_get_data):
 
 
 def test_get_id():
+    """Функция тестирования для view.get_id()"""
     input_data = '1\n'
     sys.stdin = StringIO(input_data)
     view = View()
@@ -54,6 +57,7 @@ def test_get_id():
 
 
 def test_get_number_operation():
+    """Функция тестирования для view.get_number_operation()"""
     input_data = '1\n'
     sys.stdin = StringIO(input_data)
     view = View()
