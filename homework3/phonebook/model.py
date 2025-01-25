@@ -47,11 +47,19 @@ class Abonent:
         self._phone = phone
         self._comment = comment
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'surname: {self.surname.ljust(12)}' + \
             f'name: {self.name.ljust(12)}' + \
             f'phone: {self.phone.ljust(16)}' + \
             f'comment: {self.comment}'
+
+    def __eq__(self, other: 'Abonent') -> bool:
+        self_dict = self.__dict__
+        other_dict = other.__dict__
+        for k in self_dict.keys():
+            if self_dict[k] != other_dict[k]:
+                return False
+        return True
 
     @property
     def name(self) -> str:
@@ -103,7 +111,7 @@ class PhoneBook:
         self.__last_id = 0
         self.__ab_value = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         res_str = '\n' + '-' * 85 + '\n' + \
                   'Номер (ID)'.ljust(16) + \
                   'Фамилия'.ljust(16) + \
@@ -133,11 +141,17 @@ class PhoneBook:
             return abonent
         raise StopIteration
 
-    def __eq__(self, other: 'PhoneBook'):
+    def __eq__(self, other: 'PhoneBook') -> bool:
         for self_ab in self._abonents.values():
             if self_ab not in other._abonents.values():
                 return False
         return True
+
+    def __contains__(self, item: 'Abonent') -> bool:
+        for i in self.get_id:
+            if self.get(i) == item:
+                return True
+        return False
 
     @property
     def file_name(self) -> str:
@@ -178,6 +192,7 @@ class PhoneBook:
         abonent_id -- ID пользователя
         """
         del self._abonents[abonent_id]
+        self.__last_id = max(map(int, self.get_id))
 
     def update(self, abonent_id: str, abonent: Abonent) -> None:
         """Изменение контакта в справочнике
@@ -197,10 +212,10 @@ class PhoneBook:
         find_book = PhoneBook()
         for ab_id, ab in self._abonents.items():
             if find_string in ab_id.lower() or \
-                    find_string in ab['surname'].lower() or \
-                    find_string in ab['name'].lower() or \
-                    find_string in ab['comment'].lower() or \
-                    find_string in ab['phone'].lower():
+                    find_string.lower() in ab['surname'].lower() or \
+                    find_string.lower() in ab['name'].lower() or \
+                    find_string.lower() in ab['comment'].lower() or \
+                    find_string.lower() in ab['phone'].lower():
                 find_book._abonents[ab_id] = ab
         return find_book
 
