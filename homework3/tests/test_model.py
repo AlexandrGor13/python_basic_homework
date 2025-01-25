@@ -1,3 +1,6 @@
+import json
+import os
+
 import pytest
 
 from homework3.phonebook.model import PhoneBook, Abonent
@@ -91,3 +94,38 @@ def test_find(find_phonebook):
                 find_string in ab.comment:
             assert_flag = False
     assert assert_flag
+
+
+def test_write_phone_book():
+    pb = PhoneBook()
+    pb.file_name = 'test.txt'
+    pb.add(Abonent('Иван', 'Петров', '89042387836', 'рабочий'))
+    pb.write_phone_book()
+    file_string = ''
+    if os.path.exists(pb.file_name):
+        try:
+            with open(pb.file_name, 'r') as file:
+                file_string = str(json.load(file))
+            os.remove(pb.file_name)
+        except:
+            assert False
+        assert file_string == json.dumps(pb._abonents, ensure_ascii=False).replace('"', "'")
+    else:
+        assert False
+
+
+def test_read_phone_book():
+    pb = PhoneBook()
+    pb.file_name = 'test.txt'
+    file_string = '{"1": {"name": "Иван", "surname": "Петров", "phone": "89042387836", "comment": "рабочий"}}'
+    try:
+        with open(pb.file_name, 'w') as file:
+            file.write(file_string)
+    except:
+        assert False
+    pb.read_phone_book()
+    ab = pb.get('1')
+    assert str(pb.get('1')) == f'surname: {ab.surname.ljust(12)}' + \
+           f'name: {ab.name.ljust(12)}' + \
+           f'phone: {ab.phone.ljust(16)}' + \
+           f'comment: {ab.comment}'
