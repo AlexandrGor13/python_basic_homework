@@ -65,7 +65,7 @@ class Controller:
     def show(self) -> None:
         """Вызывает вывод на экран телефонного справочника через представление"""
         self.__phonebook.read_phone_book()
-        self.__view.show(self.__phonebook)
+        self.__view.show(str(self.__phonebook))
 
     def add(self) -> None:
         """Добавляет контакт в справочник через представление"""
@@ -108,7 +108,7 @@ class Controller:
         self.__phonebook.read_phone_book()
         find_string = self.__view.get_str()
         findbook = self.__phonebook.find(find_string)
-        self.__view.show(findbook)
+        self.__view.show(str(findbook))
 
     @property
     def get_operation(self) -> list:
