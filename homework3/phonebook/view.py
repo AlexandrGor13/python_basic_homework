@@ -9,7 +9,11 @@ class View:
         self.menu_str = ''
 
     def show(self, str_book: str) -> None:
-        """Выводит на экран текстовую информацию о телефонном справочнике """
+        """Выводит на экран текстовую информацию о телефонном справочнике
+
+        Ключевые аргументы:
+        str_book -- справочник в виде текстовой строки
+        """
         print(str_book)
 
     def waiting(self) -> None:
@@ -45,7 +49,11 @@ class View:
         return find_string
 
     def show_menu(self, menu: dict) -> None:
-        """Выводит меню на экран """
+        """Выводит меню на экран
+
+        Ключевые аргументы:
+        menu -- словарь со строками меню
+        """
         print(f'''
 ===============================================
 ========= Меню телефонного справчника =========
@@ -55,7 +63,7 @@ class View:
             print(f'\t{k} - {v}')
         print('\nВаш выбор: ')
 
-    def get_number_operation(self, tuples_oper: tuple) -> int:
+    def get_number_operation(self) -> int:
         """Запрашивает у пользователя номер операции из меню"""
         number_operation = input()
         print()

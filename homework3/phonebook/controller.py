@@ -17,8 +17,8 @@ class Controller:
         while code_operation:
             try:
                 self.__view.show_menu(self.get_menu)
-                code_operation = int(self.__view.get_number_operation(tuple(self.get_menu.keys())))
-                if code_operation > 0:
+                code_operation = int(self.__view.get_number_operation())
+                if code_operation > 0 and code_operation in self.get_menu.keys():
                     self.get_operation[code_operation - 1]()
                     self.__view.waiting()
             except InputError:
