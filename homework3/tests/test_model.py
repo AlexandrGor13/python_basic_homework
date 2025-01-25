@@ -124,6 +124,7 @@ def test_read_phone_book():
     except:
         assert False
     pb.read_phone_book()
+    os.remove(pb.file_name)
     ab = pb.get('1')
     assert str(pb.get('1')) == f'surname: {ab.surname.ljust(12)}' + \
            f'name: {ab.name.ljust(12)}' + \
