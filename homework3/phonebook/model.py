@@ -1,5 +1,6 @@
 """Модуль model"""
 
+from dataclasses import dataclass
 import json
 import os
 
@@ -38,14 +39,14 @@ class FileWriter:
             raise FileError('Ошибка открытия файла.')
 
 
+@dataclass
 class Abonent:
     """Класс пользователя (абонента) из телефонного справочника"""
 
-    def __init__(self, name: str, surname: str, phone: str = '', comment: str = ''):
-        self._name = name
-        self._surname = surname
-        self._phone = phone
-        self._comment = comment
+    name: str
+    surname: str
+    phone: str
+    comment: str
 
     def __str__(self) -> str:
         return f'surname: {self.surname.ljust(12)}' + \
@@ -60,46 +61,6 @@ class Abonent:
             if self_dict[k] != other_dict[k]:
                 return False
         return True
-
-    @property
-    def name(self) -> str:
-        """Получение имени пользователя"""
-        return self._name
-
-    @name.setter
-    def name(self, value: str) -> None:
-        """Присвоение имени пользователя"""
-        self._name = value
-
-    @property
-    def surname(self) -> str:
-        """Получение фамилии пользователя"""
-        return self._surname
-
-    @surname.setter
-    def surname(self, value: str) -> None:
-        """Присвоение фамилии пользователя"""
-        self._surname = value
-
-    @property
-    def phone(self) -> str:
-        """Получение номера телефона пользователя"""
-        return self._phone
-
-    @phone.setter
-    def phone(self, value: str) -> None:
-        """Присвоение номера телефона пользователя"""
-        self._phone = value
-
-    @property
-    def comment(self) -> str:
-        """Получение комментария о пользователе"""
-        return self._comment
-
-    @comment.setter
-    def comment(self, value: str) -> None:
-        """Присвоение комментария о пользователе"""
-        self._comment = value
 
 
 class PhoneBook:
@@ -183,7 +144,7 @@ class PhoneBook:
         abonent -- объект класса Abonent (пользователь)
         """
         self.__last_id += 1
-        self._abonents[str(self.__last_id)] = {k[1:]: v for k, v in abonent.__dict__.items()}
+        self._abonents[str(self.__last_id)] = {k: v for k, v in abonent.__dict__.items()}
 
     def delete(self, abonent_id: str) -> None:
         """Удаление контакта из справочника
@@ -201,7 +162,7 @@ class PhoneBook:
         abonent_id -- ID пользователя
         abonent -- объект класса Abonent (пользователь)
         """
-        self._abonents[abonent_id] = {k[1:]: v for k, v in abonent.__dict__.items()}
+        self._abonents[abonent_id] = {k: v for k, v in abonent.__dict__.items()}
 
     def find(self, find_string: str) -> 'PhoneBook':
         """Поиск по всем полям справочника
