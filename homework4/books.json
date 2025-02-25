@@ -1,0 +1,57 @@
+{
+    "1": {
+        "title": "string",
+        "author": "string",
+        "genre": "string",
+        "price": 1.0,
+        "description": "string",
+        "average_rating": 0.0,
+        "quantity": 1,
+        "id": 1,
+        "token": "f3d4c413-25b8-44b9-8f77-b5ec56675508"
+    },
+    "2": {
+        "title": "string",
+        "author": "string",
+        "genre": "string",
+        "price": 1.0,
+        "description": "string",
+        "average_rating": 0.0,
+        "quantity": 1,
+        "id": 2,
+        "token": "c62f18db-a2fd-4d53-8d66-f404f78b99e8"
+    },
+    "3": {
+        "title": "string",
+        "author": "string",
+        "genre": "string",
+        "price": 1.0,
+        "description": "string",
+        "average_rating": 0.0,
+        "quantity": 1,
+        "id": 3,
+        "token": "03c33fac-dc78-4141-95c6-f2dab22c73b3"
+    },
+    "4": {
+        "title": "string",
+        "author": "string",
+        "genre": "string",
+        "price": 1.0,
+        "description": "string",
+        "average_rating": 0.0,
+        "quantity": 1,
+        "id": 4,
+        "token": "6f7cd291-e7d2-4fab-9425-2d712500c572"
+    },
+    "5": {
+        "title": "string",
+        "author": "string",
+        "genre": "string",
+        "price": 1.0,
+        "description": "string",
+        "average_rating": 0.0,
+        "quantity": 1,
+        "id": 5,
+        "token": "480a9603-9ecf-4aae-befb-a27de44066af"
+    }
+}
