@@ -6,13 +6,15 @@ from pydantic import BaseModel, Field
 
 
 class BookBase(BaseModel):
+    """
+    Base book model
+    """
     title: Annotated[str, MinLen(1)]
     author: Annotated[str, MinLen(1)]
     genre: Annotated[str, MinLen(1)]
     price: Annotated[float, Field(gt=0)]
     description: Annotated[str, MinLen(1)] | None = None
-    average_rating: Annotated[float, Field(default=0)]
-    quantity: Annotated[int, Field(gt=0)]
+    quantity: Annotated[int, Field(ge=0)]
 
 
 class BookCreate(BookBase):
@@ -29,10 +31,16 @@ class BookRead(BookBase):
 
 
 def generate_token() -> str:
+    """
+    Generate a unique token for book.
+    """
     token = str(uuid.uuid4())
     return token
 
 
 class Book(BookBase):
+    """
+    Book model
+    """
     id: int
     token: str = Field(default_factory=generate_token)

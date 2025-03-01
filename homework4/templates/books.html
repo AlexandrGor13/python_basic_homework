@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if id %}
+        Book {{ id }} Page
+    {% else %}
+        Books Page
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if status == "created" %}
+        <p>Книга добавлена успешно!</p>
+        <script type="text/javascript">
+            alert("Книга добавлена успешно!")
+        </script>
+    {% endif %}
+    <table style="width: 90%">
+        <tr>
+            <td style="width: 70%; align-content: flex-start">
+                {% for book in books %}
+                    <div>
+                        <dl class="row" style="text-align: left; padding-left: 50px;">
+                            <p><a href="books/{{ book["id"] }}">Книга #{{ book["id"] }}</a></p>
+                            <div class="text-left">
+                                <img src="/img/book.jpg" class=class="img-thumbnail">
+                            </div>
+
+                            <dt class=" col-sm-3">Название</dt>
+                            <dd class="col-sm-9"><i><b>{{ book["title"] }}</b></i></dd>
+
+                            <dt class="col-sm-3">Автор</dt>
+                            <dd class="col-sm-9">{{ book["author"] }}</dd>
+
+                            <dt class="col-sm-3">Цена, руб.</dt>
+                            <dd class="col-sm-9">{{ book["price"] }}</dd>
+
+                            {% if id %}
+                                <dt class="col-sm-3">Жанр</dt>
+                                <dd class="col-sm-9">{{ book["genre"] }}</dd>
+
+                                <dt class="col-sm-3">Краткое описание</dt>
+                                <dd class="col-sm-9">{{ book["description"] }}</dd>
+
+                                <dt class="col-sm-3">Количество, шт.</dt>
+                                <dd class="col-sm-9">{{ book["quantity"] }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                {% endfor %}
+            </td>
+            <td style="vertical-align: top">
+                <p>
+                    {% if not id %}
+                        <h3>Добавить новую книгу</h3></p>
+                        <form style="width: 80%" method="post">
+                            <div class="mb-3">
+                                <label for="exampleInputText" class="form-label">Название книги</label>
+                                <input type="text" class="form-control" name="title">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputText" class="form-label">Автор</label>
+                                <input type="text" class="form-control" name="author">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputText" class="form-label">Цена, руб.</label>
+                                <input type="text" class="form-control" name="price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputText" class="form-label">Жанр</label>
+                                <input type="text" class="form-control" name="genre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputText" class="form-label">Краткое описание</label>
+                                <textarea class="form-control" name="description" rows="8"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputText" class="form-label">Количество, шт.</label>
+                                <input type="text" class="form-control" name="quantity">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </form>
+                    {% endif %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
