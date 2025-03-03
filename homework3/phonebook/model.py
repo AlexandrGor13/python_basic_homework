@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import json
 import os
 
-from homework3.phonebook.exception import *
+from phonebook.exception import FileError, JSONError
 
 
 class FileReader:
@@ -16,7 +16,7 @@ class FileReader:
     def read(self) -> dict:
         """Функция для чтения JSON-файла"""
         try:
-            with open(self._filename, 'r') as file:
+            with open(self._filename, 'r', encoding="utf-8") as file:
                 return json.load(file)
         except OSError as ex:
             raise FileError('Ошибка открытия файла.')

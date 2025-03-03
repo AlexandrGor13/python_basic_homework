@@ -3,8 +3,8 @@ from io import StringIO
 
 import pytest
 
-from homework3.phonebook.exception import InputError
-from homework3.phonebook.view import View
+from phonebook.exception import InputError
+from phonebook.view import View
 
 
 @pytest.fixture(params=[('Владимир', 'Сидоров', '89110363982', 'рабочий'),

@@ -1,6 +1,6 @@
 """Модуль view (представление)"""
 
-from homework3.phonebook.exception import *
+from phonebook.exception import *
 
 
 class View:

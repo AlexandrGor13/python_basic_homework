@@ -1,3 +1,5 @@
-import homework3.phonebook.model
-import homework3.phonebook.view
-import homework3.phonebook.exception
+
+from . import model
+from . import controller
+from . import view
+from . import exception

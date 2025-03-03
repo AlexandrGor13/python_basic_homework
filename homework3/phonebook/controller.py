@@ -1,8 +1,8 @@
 """Модуль controller (контроллер)"""
 
-from homework3.phonebook.exception import *
-from homework3.phonebook.model import Abonent, PhoneBook
-from homework3.phonebook.view import View
+from phonebook.exception import *
+from phonebook.model import Abonent, PhoneBook
+from phonebook.view import View
 
 
 class Controller:
@@ -86,8 +86,8 @@ class Controller:
                 continue
         dct = self.__view.get_data()
         for k, v in dct.items():
-            if not v:
-                dct[k] = dct[k] if dct[k] else self.__phonebook.get(str_id).__dict__['_' + k]
+            if v == '':
+                dct[k] = dct[k] if dct[k] else self.__phonebook.get(str_id).__dict__[k]
         self.__phonebook.update(str_id, Abonent(**dct))
         self.__phonebook.write_phone_book()
 

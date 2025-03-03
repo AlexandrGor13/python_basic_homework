@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from homework3.phonebook.model import PhoneBook, Abonent
+from phonebook.model import PhoneBook, Abonent
 
 
 @pytest.fixture(params=[('Владимир', 'Сидоров', '89110363982', 'рабочий'),
