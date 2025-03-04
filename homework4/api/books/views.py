@@ -1,8 +1,7 @@
-from fastapi import APIRouter, HTTPException, status, Request, Form
-from typing import Annotated
+from fastapi import APIRouter, HTTPException, status, Request
 from pydantic import PositiveInt
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 from . import schemas
 from .crud import books
@@ -21,7 +20,7 @@ def get_books(request: Request):
     """
     Get all books.
     """
-    return books.get()
+    return JSONResponse(content=jsonable_encoder(books.get()))
 
 
 @router.get(
@@ -35,7 +34,7 @@ def get_book(book_id: PositiveInt, request: Request):
     """
     book = books.get_by_id(book_id=book_id)
     if book:
-        return book
+        return JSONResponse(content=jsonable_encoder(book))
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -52,4 +51,4 @@ def create_book(book_in: schemas.BookCreate):
     """
     Create a new book.
     """
-    return books.create(book_in=book_in)
+    return JSONResponse(content=jsonable_encoder(books.create(book_in=book_in)))
