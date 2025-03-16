@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, status, Request
+from fastapi import APIRouter, HTTPException, status, Request, Form, Body
 from pydantic import PositiveInt
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from typing import Annotated
 
-from . import schemas
+from .schemas import Book, BookCreate, BookRead
 from .crud import books
 
 router = APIRouter(
@@ -13,7 +14,7 @@ router = APIRouter(
 
 @router.get(
     "",
-    response_model=list[schemas.BookRead],
+    response_model=list[BookRead],
     status_code=status.HTTP_200_OK,
 )
 def get_books(request: Request):
@@ -25,7 +26,7 @@ def get_books(request: Request):
 
 @router.get(
     "/{book_id}",
-    response_model=schemas.BookRead,
+    response_model=BookRead,
     status_code=status.HTTP_200_OK
 )
 def get_book(book_id: PositiveInt, request: Request):
@@ -44,11 +45,28 @@ def get_book(book_id: PositiveInt, request: Request):
 
 @router.post(
     "",
-    response_model=schemas.Book,
+    response_model=Book,
     status_code=status.HTTP_201_CREATED
 )
-def create_book(book_in: schemas.BookCreate):
+def create_book(book_in: Annotated[BookCreate, Body()]):
     """
     Create a new book.
     """
     return JSONResponse(content=jsonable_encoder(books.create(book_in=book_in)))
+
+
+@router.post(
+    "/v2",
+    response_model=Book,
+    status_code=status.HTTP_201_CREATED
+)
+def create_book_v2(book_in: Annotated[BookCreate, Form()]):
+    """
+    Create a new book.
+    """
+    if book_in:
+        return JSONResponse(content=jsonable_encoder(books.create(book_in=book_in)))
+    raise HTTPException(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        detail="Validation Error",
+    )
