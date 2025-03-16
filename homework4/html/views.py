@@ -4,7 +4,7 @@ from pydantic import PositiveInt
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from api.books import schemas
+from api.books.schemas import BookRead, BookCreate
 from api.books.crud import books
 
 router = APIRouter(
@@ -28,7 +28,7 @@ def root(request: Request):
     '/about',
     response_class=HTMLResponse
 )
-def root(request: Request):
+def about(request: Request):
     return templates.TemplateResponse(
         name="about.html",
         request=request,
@@ -37,7 +37,7 @@ def root(request: Request):
 
 @router.get(
     "/books",
-    response_model=list[schemas.BookRead],
+    response_model=list[BookRead],
     response_class=HTMLResponse,
     status_code=status.HTTP_200_OK,
 )
@@ -54,7 +54,7 @@ def get_books(request: Request):
 
 @router.get(
     "/books/{book_id}",
-    response_model=schemas.BookRead,
+    response_model=BookRead,
     response_class=HTMLResponse,
     status_code=status.HTTP_200_OK,
 )
@@ -78,32 +78,16 @@ def get_book(book_id: PositiveInt, request: Request):
 
 @router.post(
     "/books",
-    response_model=schemas.BookCreate,
+    response_model=BookCreate,
     response_class=HTMLResponse,
     status_code=status.HTTP_201_CREATED
 )
-def create_book(
-        title: Annotated[str, Form()],
-        author: Annotated[str, Form()],
-        genre: Annotated[str, Form()],
-        description: Annotated[str, Form()],
-        price: Annotated[float, Form()],
-        quantity: Annotated[int, Form()],
-        request: Request
-):
+def create_book(book_in: Annotated[BookCreate, Form()], request: Request):
     """
     Create a new book.
     """
-    book = schemas.BookCreate(
-        title=title,
-        author=author,
-        genre=genre,
-        description=description,
-        price=price,
-        quantity=quantity
-    )
-    if book:
-        books.create(book)
+    if book_in:
+        books.create(book_in)
         return templates.TemplateResponse(
             name="books.html",
             request=request,
@@ -113,3 +97,4 @@ def create_book(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         detail="Validation Error",
     )
+
