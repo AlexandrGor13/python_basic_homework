@@ -2,6 +2,9 @@ from app.db import async_session
 from app.models import User, Post
 
 async def fill_users_data(data: list[dict]):
+    """
+    Заполняет таблицу пользователей
+    """
     async with async_session() as session:
         for user_data in data:
             user_data_dict = {}
@@ -16,6 +19,9 @@ async def fill_users_data(data: list[dict]):
 
 
 async def fill_posts_data(data: list[dict]):
+    """
+    Заполняет таблицу постов
+    """
     async with async_session() as session:
         for post_data in data:
             post_data_dict = {}
