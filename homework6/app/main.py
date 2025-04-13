@@ -13,7 +13,7 @@
 - закрытие соединения с БД
 """
 from app.db import create_tables
-from jsonplaceholder_requests import fetch_users_data, fetch_posts_data
+from app.jsonplaceholder_requests import fetch_users_data, fetch_posts_data
 from app.fill_db import fill_users_data, fill_posts_data
 
 import asyncio
