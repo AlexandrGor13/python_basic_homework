@@ -1,0 +1,4 @@
+.venv
+.env
+app/.env
+app/run.sh
