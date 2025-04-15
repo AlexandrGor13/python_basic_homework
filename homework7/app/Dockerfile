@@ -1,4 +1,4 @@
-FROM python:3.13-bookworm  AS python-base
+FROM python:3.13-bookworm
 WORKDIR /var/app
 
 ENV PYTHONUNBUFFERED=1
@@ -18,5 +18,3 @@ COPY ./app ./
 RUN chmod +x ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
-
-#CMD ["gunicorn", "main:app", "--workers", "2", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
