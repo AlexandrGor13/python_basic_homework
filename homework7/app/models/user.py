@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING, List
 
 from sqlalchemy import (
     String,
@@ -11,10 +10,6 @@ from sqlalchemy.orm import (
 
 from .base import Base
 from schemas.user import UserRead
-
-if TYPE_CHECKING:
-    from .order import Order
-    from .address import Address
 
 
 class User(Base):
