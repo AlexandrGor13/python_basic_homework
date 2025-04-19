@@ -1,18 +1,13 @@
 from typing import Annotated
 from fastapi import APIRouter, Body, status, Depends
 from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 
 from sqlalchemy.exc import NoResultFound, InterfaceError, IntegrityError
-
 
 from schemas import User as UserSchema
 from .crud import UsersCRUD
 from .dependencies import users_crud
 
-DEFAULT_STR = ""
-DEFAULT_EMAIL = "***@***.***"
-DEFAULT_PHONE = "+7**********"
 
 router = APIRouter(tags=["Users"], prefix="/users")
 
@@ -47,8 +42,8 @@ router = APIRouter(tags=["Users"], prefix="/users")
     },
 )
 async def set_user(
-    user_in: Annotated[UserSchema, Body()],
-    crud: Annotated[UsersCRUD, Depends(users_crud)],
+        user_in: Annotated[UserSchema, Body()],
+        crud: Annotated[UsersCRUD, Depends(users_crud)],
 ):
     """
     Создание нового пользователя
@@ -66,10 +61,9 @@ async def set_user(
             content={"detail": "User already exists"},
         )
     return {
-            "description": "User created",
-            "user info": user,
-        }
-
+        "description": "User created",
+        "user info": user,
+    }
 
 
 @router.get(
@@ -94,4 +88,3 @@ async def all_users(
             content={"detail": "Server Error"},
         )
     return users
-
