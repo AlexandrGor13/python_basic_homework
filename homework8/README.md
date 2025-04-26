@@ -34,6 +34,6 @@
 #### Выполнено:
 
 1. Создан Django проект homework8 и приложение store_app
-2. созданы модели Product, Category и связь между ними через ForeignKey
+2. Созданы модели Product, Category и связь между ними через ForeignKey
 3. Созданы и применены миграции
 4. Создана кастомная команда generate_data, генерирующая содержимое таблиц store_app_category и store_app_product
