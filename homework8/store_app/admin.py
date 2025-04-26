@@ -6,13 +6,13 @@ from .models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "description", "price", "created_at", "categories")
+    list_display = ("name", "description", "price", "created_at", "category")
     ordering = (
         "name",
         "created_at",
     )
     list_filter = ("name", "price")
-    search_fields = ("name", "categories")
+    search_fields = ("name", "category")
     search_help_text = "Поиск по имени и категории"
 
     @admin.action(description="Увеличить цену на 10%%")
