@@ -4,7 +4,7 @@ from .models import Product, Category
 
 
 
-class PostForm(forms.Form):
+class ProductForm(forms.Form):
     name = forms.CharField(
         max_length=100,
         label='Название',
@@ -31,7 +31,7 @@ class PostForm(forms.Form):
         widget = forms.Select(attrs={'class': 'form-control'})
     )
 
-class PostModelForm(forms.ModelForm):
+class ProductModelForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["name", "description", "price", "category"]
