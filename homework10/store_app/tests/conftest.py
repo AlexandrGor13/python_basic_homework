@@ -13,7 +13,7 @@ def product(category):
         name='Тестовый товар',
         description='Описание тестового товара',
         price=10.1,
-        author=category,
+        category=category,
     )
 
 
@@ -23,5 +23,5 @@ def product2(category):
         name='Другой тестовый товар',
         description='Описание другого тестового товара',
         price=50.5,
-        author=category,
+        category=category,
     )
