@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
-from .forms import PostModelForm
+from .forms import ProductModelForm
 from .models import Product, Category
 
 def index(request):
@@ -44,7 +44,7 @@ class ProductCreateView(CreateView):
     """Представление для создания нового товара"""
     model = Product
     template_name = 'store_app/add_product.html'
-    form_class = PostModelForm
+    form_class = ProductModelForm
     success_url = reverse_lazy('product')
 
     def form_valid(self, form):
@@ -61,7 +61,7 @@ class ProductUpdateView(UpdateView):
     """Представление для обновления товара"""
     model = Product
     template_name = 'store_app/edit_product.html'
-    form_class = PostModelForm
+    form_class = ProductModelForm
     success_url = reverse_lazy('products')
 
     def form_valid(self, form):
