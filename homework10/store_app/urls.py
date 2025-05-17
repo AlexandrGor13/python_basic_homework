@@ -4,11 +4,12 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("about/", views.about, name="about"),
-    path("products/", views.product_list, name="products"),
-    path('products/add/', views.add_product, name='add_product'),
-    path("products/<int:product_id>/", views.product_detail, name="product_detail"),
-    path('products/<int:product_id>/edit/', views.edit_product, name='edit_product'),
+    path('about/', views.AboutView.as_view(), name='about'),
+    path('products/', views.ProductListView.as_view(), name='products'),
+    path('products/add/', views.ProductCreateView.as_view(), name='add_product'),
+    path('products/<int:pk>/', views.ProductDetailView.as_view(), name='product_detail'),
+    path('products/<int:pk>/edit/', views.ProductUpdateView.as_view(), name='edit_product'),
+    path('products/<int:pk>/delete/', views.ProductDeleteView.as_view(), name='delete_product'),
     path("categories/", views.category_list, name="categories"),
 ]
 

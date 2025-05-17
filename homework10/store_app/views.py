@@ -1,58 +1,89 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import PostForm, PostModelForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.base import TemplateView
+from django.urls import reverse_lazy
+from django.contrib import messages
+
+from .forms import PostModelForm
 from .models import Product, Category
-
-
-# Create your views here.
-
 
 def index(request):
     return render(request, "store_app/index.html")
 
 
-def about(request):
-    return HttpResponse("About")
+class AboutView(TemplateView):
+    template_name = 'store_app/about.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'О нас'
+        context['content'] = 'Добро пожаловать на наш сайт'
+        return context
 
 
-def product_list(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "store_app/product_list.html", context=context)
+class ProductListView(ListView):
+    """Представление для отображения списка товаров"""
+    model = Product
+    template_name = 'store_app/product_list.html'
+    context_object_name = 'products'
 
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    context = {"product": product}
-    return render(request, "store_app/product_detail.html", context=context)
+class ProductDetailView(DetailView):
+    """Представление для отображения деталей товара"""
+    model = Product
+    template_name = 'store_app/product_detail.html'
+    context_object_name = 'product'
 
-def add_product(request):
-    if request.method == 'POST':
-        form = PostModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('posts')
-    else:
-        form = PostModelForm()
-
-    context = {'form': form, 'title': 'Добавить товар'}
-    return render(request, 'store_app/add_product.html', context=context)
+    # def get(self, request, *args, **kwargs):
+    #     product = self.get_object()
+    #     return super().get(request, *args, **kwargs)
 
 
-def edit_product(request, product_id):
+class ProductCreateView(CreateView):
+    """Представление для создания нового товара"""
+    model = Product
+    template_name = 'store_app/add_product.html'
+    form_class = PostModelForm
+    success_url = reverse_lazy('product')
 
-    product = get_object_or_404(Product, id=product_id)
+    def form_valid(self, form):
+        messages.success(self.request, 'Товар успешно создан')
+        return super().form_valid(form)
 
-    if request.method == 'POST':
-        form = PostModelForm(request.POST, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('products')
-    else:
-        form = PostModelForm(instance=product)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление товара'
+        return context
 
-    context = {'form': form, 'title': 'Добавить товар'}
-    return render(request, 'store_app/edit_product.html', context)
+
+class ProductUpdateView(UpdateView):
+    """Представление для обновления товара"""
+    model = Product
+    template_name = 'store_app/edit_product.html'
+    form_class = PostModelForm
+    success_url = reverse_lazy('products')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Товар успешно обновлен')
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Обновление товара'
+        return context
+
+
+class ProductDeleteView(DeleteView):
+    """Представление для удаления товара"""
+    model = Product
+    template_name = 'store_app/delete_product.html'
+    success_url = reverse_lazy('products')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Удаление товара'
+        return context
 
 
 def category_list(request):

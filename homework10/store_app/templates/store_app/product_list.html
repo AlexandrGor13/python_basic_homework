@@ -1,6 +1,6 @@
 {% extends 'store_app/base.html' %}
 
-{% block title %}Список товары{% endblock %}
+{% block title %}Список товаров{% endblock %}
 
 {% block content %}
         <h1>Список товаров</h1>
@@ -11,6 +11,7 @@
                 <p>{{ product.description}}</p>
                 <p>{{ product.price}} руб.</p>
                 <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-warning">Редактировать</a>
+                <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Удалить</a>
             </li>
             {% empty %}
                  <li class="list-group-item">Нет продуктов</li>
